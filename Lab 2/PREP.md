@@ -29,6 +29,26 @@
 
 A packet has to cross a grid of flaky routers. We first measured how good two simple rulebooks are, once exactly with equations and once by simulating many deliveries. Both are terrible (about 200 hops) because they get stuck against a wall. Value iteration then computes the best direction at every router from the known link probabilities, and the packet arrives in about 10 hops.
 
+### The notebook, cell by cell
+
+| # | Cell | What it does, in one line |
+|---|---|---|
+| 1 | "Run this first" (text) | Reminder to run the setup cell. |
+| 2 | Setup (big code cell) | Builds everything: `GridSSP` (the 5×5 router grid with its own slip/stay odds per router, exact policy evaluation, simulation, value iteration), `build_policy`, the heatmap plot, `run_many_simulations` and the animation. Nothing to change. |
+| 3 | Task 1 (text) | Asks to describe the MDP. |
+| 4 | Task 1 code | Prints and plots where the packet can land from one router with one action. Default (2,2) 'U': 0.62 up, 0.10 / 0.05 sideways, 0.23 stays. Change `state` and `action` to explore. |
+| 5 | Task 2 (text) | Asks to evaluate two fixed policies. |
+| 6 | Task 2 code | Always-Right: solves the equations for the exact values and shows a heatmap. Good only on the bottom row. |
+| 7 | Task 2 (Part 2) | Same for Always-Down. Good only in the right column. (The variable is called `V_up` but holds the Always-Down values.) |
+| 8 | Task 3 (text) | Asks to simulate and estimate values by averaging. |
+| 9 | Task 3 Part 1 | Plays one episode of Always-Right from (0,0) and prints the path. You see it stuck against the right wall. |
+| 10 | Task 3 Part 2 | One episode of a random policy (70% R, 30% D) from (2,2). |
+| 11 | Task 3 Part 3 (optional) | Animates one episode on the grid. |
+| 12 | Task 3 Part 4 | Monte Carlo: plays many episodes and averages the score. Run with `pi_right`, then `pi_down`, and raise `n_sims` to 2000 to land close to the exact values from Task 2. |
+| 13 | Task 4 (text) | Asks to explain "optimal" and value iteration. |
+| 14 | Task 4 code | Runs value iteration (47 sweeps) and shows the optimal heatmap: about −10 from (0,0). |
+| 15 | Empty | Use it to print the optimal policy (see §2). |
+
 ## 1. Opening (30 seconds)
 
 > "We route a packet across a 5×5 wireless grid to router (4,4). Links are unreliable: the packet can slip sideways or stay where it is. Every transmission costs −1, so we want to minimise the expected number of hops. This is a stochastic shortest-path MDP. We evaluated two fixed policies exactly (linear system) and by simulation (Monte Carlo), then found the optimal policy with value iteration."

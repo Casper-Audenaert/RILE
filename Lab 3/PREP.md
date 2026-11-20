@@ -33,6 +33,28 @@
 
 On a slippery lake, a random walker reaches the goal 1.4% of the time. We computed those chances exactly, then showed that MC (learn after each walk) and TD (learn after each step) both learn the same numbers from experience alone. Then we let the agent learn which moves to make: SARSA and Q-learning both reach about 70% success. Finally, Q-learning on nothing but old random-walk data finds a policy that succeeds 82% of the time, the best possible.
 
+### The notebook, cell by cell
+
+| # | Cell | What it does, in one line |
+|---|---|---|
+| 1 | Optional installs | `pip install` line, commented out. Only needed on a fresh machine. |
+| 2 | Env + animation helpers | Creates the FrozenLake environment and functions to record and animate a walk. |
+| 3 | Demo: random walk | Animates a random walker on the 4×4 slippery lake. Shows the sliding. |
+| 4 | Task 1 (text) | Asks to explain the random policy and its true values. |
+| 5 | Task 1 code | Solves the equations for the exact values of the random policy and shows the grid. V(start) = 0.014, next to goal 0.44. These are the "true answers" later cells compare against. |
+| 6 | Task 2 (text) | Asks to compare MC and TD(0). |
+| 7 | Task 2 code (algorithms) | Defines MC (update after the episode with the full result) and TD(0) (update after every step from the next square's guess). Only defines; nothing is plotted. |
+| 8 | MC snapshots | Runs MC for 10 000 episodes and shows the value grid every 200. Stays dark until successes arrive, then lights up from the goal backwards. |
+| 9 | TD(0) snapshots | Same for TD(0), 2000 episodes. Change `SCHEDULE` (`constant`, `inverse`, `inverse_sqrt`) to see the step-size effect. |
+| 10 | Step-size experiment | Plots the error vs. the true values over time for each step-size schedule. Constant: fast but noisy; 1/(1+N): smooth but slow; 1/√(1+N): best balance. |
+| 11 | MC vs. one TD | MC against a single TD setting (`TD_SCHEDULE`, `TD_ALPHA0`). Both reach a very small error. |
+| 12 | Task 3 (text) | Asks to compare SARSA and Q-learning. |
+| 13 | Task 3 helpers | Random tie-breaking argmax, ε-greedy action choice, success-rate test, smoothing. |
+| 14 | Task 3 training | Trains SARSA and Q-learning for 10 000 episodes (α = 0.1, ε = 0.1) and plots success rate. Q-learning rises earlier; both level off around 0.7. |
+| 15 | Task 4 (text) | Asks for offline Q-learning from random data. |
+| 16 | Task 4 code | Records 1000 random episodes, then runs Q-learning on that logbook only (10 passes). Plots how good the greedy policy is per pass and its true value grid: 0.82 from the start, the best possible. |
+| 17 | max Q heatmap | **Our one added line.** Shows max_a Q(s,a); it is lower than the true values, but the ranking of moves is right. |
+
 ## 1. Opening (30 seconds)
 
 > "FrozenLake 4×4, slippery: every move goes in the intended direction or 90° to either side, each with probability 1/3. Reaching the goal gives +1; holes end the episode with 0. With γ = 1 the value of a state is the probability of reaching the goal from it. First we evaluated the random policy: exactly, then with MC and TD(0). Then we learned control with SARSA and Q-learning, and finally with offline Q-learning from random data."

@@ -33,6 +33,22 @@
 
 We must keep choosing articles without knowing which ones people like. Picking at random wastes about half the clicks. ε-greedy learns the best article but keeps wasting a fixed share of turns on random picks. UCB explores only where it is still unsure, so it stops wasting turns and its regret flattens. When we also know who the reader is, LinUCB does the same trick per type of reader and beats contextual ε-greedy by a wide margin (regret 56 vs. 502).
 
+### The notebook, cell by cell
+
+| # | Cell | What it does, in one line |
+|---|---|---|
+| 1 | Intro (text) | The story: we are NewsNet, recommending one article per user; click = 1, no click = 0. |
+| 2 | Part 1 intro (text) | Explains the environment: every article has a hidden click chance. |
+| 3 | `BernoulliBandit` | The simulator. `pull(arm)` flips a biased coin for that article and returns 1 or 0. |
+| 4 | Task 1 (a) text | Asks us to fill in ε-greedy. |
+| 5 | `run_epsilon_greedy` | **Our code.** Each step: random article with chance ε, else the best Q. Then updates Q (running average) and plots average reward, regret and how often each article was picked. Change `epsilon` at the bottom. |
+| 6 | Task 1 (b) text | Asks us to fill in UCB. |
+| 7 | `run_ucb` | **Our code.** Each step: pick the article with the highest "average + uncertainty bonus"; untried ones first. Same three plots. Change `c` at the bottom. |
+| 8–9 | Part 2 intro (text) | Now we also see user features (interests, age, time of day). |
+| 10 | Cell 1: environment and policies | `ContextualNewsEnv` (click chance = σ(θ_aᵀx), so it depends on the user) and the three policies: Random, contextual ε-greedy, LinUCB. Only defines things; nothing is plotted. |
+| 11 | Cell 2: long-run simulation | Runs all three policies on the same 20 000 users and plots average reward and cumulative regret. Main result: LinUCB 56, ε-greedy 502, random 3440. |
+| 12 | Cell 3: before vs. after | Prints 6 decisions *before* learning, trains for 10 000 rounds, then prints 6 decisions *after*, with each policy's scores. Shows the bonus shrinking and the choices becoming correct. |
+
 ## 1. Opening (30 seconds)
 
 > "We recommend one of k articles to each user. A click gives reward 1, no click gives 0. We don't know the click rates, so we have to explore to learn them and exploit to collect clicks. In Part 1 every user is the same: a multi-armed bandit. We compared ε-greedy and UCB against random. In Part 2 we see the user's features, and we compared contextual ε-greedy with LinUCB."
